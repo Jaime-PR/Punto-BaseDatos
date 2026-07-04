@@ -36,7 +36,7 @@ namespace Punto.Forms
 
                     if (existe > 0)
                     {
-                        MessageBox.Show("Bienvenido.");
+                        MessageBox.Show("Ingresando al sistema.");
 
                         frmPrincipal principal = new frmPrincipal();
                         this.Hide();     
