@@ -135,7 +135,50 @@ namespace Punto.Forms
 
         }
 
+        //Editar
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if (lblId.Text == "0")
+            {
+                MessageBox.Show("Seleccione un producto.");
+                return;
+            }
 
+            if (!decimal.TryParse(txtPrecio.Text, out decimal precio) ||!int.TryParse(txtStock.Text, out int stock))
+            {
+                MessageBox.Show("Precio o Stock inválidos.");
+                return;
+            }
+
+            try
+            {
+                using (MySqlConnection conn = conexion.GetConnection())
+                {
+                    string sql = @"UPDATE productos SET codigo=@codigo, descripcion=@descripcion, precio=@precio, stock=@stock, categoria=@categoria WHERE producto_id=@id";
+
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+
+                    cmd.Parameters.AddWithValue("@codigo", txtCodigo.Text);
+                    cmd.Parameters.AddWithValue("@descripcion", txtNombre.Text);
+                    cmd.Parameters.AddWithValue("@precio", precio);
+                    cmd.Parameters.AddWithValue("@stock", stock);
+                    cmd.Parameters.AddWithValue("@categoria", cmbCategorias.Text);
+                    cmd.Parameters.AddWithValue("@id", lblId.Text);
+
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Producto actualizado.");
+
+                    CargarDatos();
+
+                    Limpiar();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
 
 
