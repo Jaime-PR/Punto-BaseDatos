@@ -96,7 +96,44 @@ namespace Punto.Forms
             }
         }
 
-        
+        //Agregar
+        private void btnNuevo_Click(object sender, System.EventArgs e)
+        {
+            if (!decimal.TryParse(txtPrecio.Text, out decimal precio) || !int.TryParse(txtStock.Text, out int stock))
+            {
+                MessageBox.Show("Precio o Stock inválidos.");
+                return;
+            }
+
+            try
+            {
+                using (MySqlConnection conn = conexion.GetConnection())
+                {
+                    string sql = @"INSERT INTO productos (codigo,descripcion,precio,stock,categoria) VALUES (@codigo,@descripcion,@precio,@stock,@categoria)";
+
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+
+                    cmd.Parameters.AddWithValue("@codigo", txtCodigo.Text);
+                    cmd.Parameters.AddWithValue("@descripcion", txtNombre.Text);
+                    cmd.Parameters.AddWithValue("@precio", precio);
+                    cmd.Parameters.AddWithValue("@stock", stock);
+                    cmd.Parameters.AddWithValue("@categoria", cmbCategorias.Text);
+
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Producto guardado.");
+
+                    CargarDatos();
+
+                    Limpiar();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
 
 
 
