@@ -182,6 +182,44 @@ namespace Punto.Forms
 
 
 
+        //Eliminar
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (lblId.Text == "0")
+            {
+                MessageBox.Show("Seleccione un producto.");
+                return;
+            }
+
+            DialogResult respuesta = MessageBox.Show("¿Desea eliminar este producto?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (respuesta == DialogResult.Yes)
+            {
+                try
+                {
+                    using (MySqlConnection conn = conexion.GetConnection())
+                    {
+                        string sql = "DELETE FROM productos WHERE producto_id=@id";
+
+                        MySqlCommand cmd = new MySqlCommand(sql, conn);
+
+                        cmd.Parameters.AddWithValue("@id", lblId.Text);
+
+                        cmd.ExecuteNonQuery();
+
+                        MessageBox.Show("Producto eliminado.");
+
+                        CargarDatos();
+
+                        Limpiar();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
 
 
 
