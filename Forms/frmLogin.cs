@@ -39,8 +39,8 @@ namespace Punto.Forms
                         MessageBox.Show("Ingresando al sistema.");
 
                         frmPrincipal principal = new frmPrincipal();
-                        this.Hide();     
-                        principal.Show();     
+                        this.Hide();
+                        principal.Show();
                     }
                     else
                     {
